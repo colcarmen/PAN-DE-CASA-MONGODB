@@ -1,0 +1,248 @@
+/* ==========================================================================
+   🍞 PAN DE CASA — SISTEMA DE DISEÑO ARTESANAL & MATERIALIZE CSS OVERRIDES
+   ========================================================================== */
+
+:root {
+  --primary: #e76e55;
+  --primary-hover: #d65a41;
+  --primary-light: #fbeee9;
+  --primary-shadow: rgba(231, 110, 85, 0.3);
+  --bg-general: #f7f9fc;
+  --bg-surface: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.88);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: rgba(226, 232, 240, 0.85);
+
+  /* Semantic badges */
+  --badge-pending-bg: #fef3c7;
+  --badge-pending-text: #d97706;
+  --badge-prep-bg: #dbeafe;
+  --badge-prep-text: #1d4ed8;
+  --badge-sent-bg: #e0e7ff;
+  --badge-sent-text: #4338ca;
+  --badge-delivered-bg: #dcfce7;
+  --badge-delivered-text: #15803d;
+  --badge-cancelled-bg: #fee2e2;
+  --badge-cancelled-text: #b91c1c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-general);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Buttons in Materialize */
+.btn, .btn-large, .btn-small {
+  background-color: var(--primary) !important;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-family: 'Work Sans', sans-serif !important;
+  box-shadow: 0 4px 12px var(--primary-shadow) !important;
+  transition: all 0.25s ease !important;
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+  background-color: var(--primary-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--primary-shadow) !important;
+}
+
+.btn-secondary {
+  background-color: #f1f5f9 !important;
+  color: var(--text-main) !important;
+  box-shadow: none !important;
+}
+
+.btn-secondary:hover {
+  background-color: #e2e8f0 !important;
+}
+
+.btn-outline {
+  background-color: transparent !important;
+  color: var(--primary) !important;
+  border: 1.5px solid var(--primary) !important;
+  box-shadow: none !important;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-light) !important;
+}
+
+.btn-danger {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25) !important;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626 !important;
+}
+
+/* Cards */
+.card {
+  border-radius: 16px !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+  background-color: #ffffff !important;
+  transition: all 0.3s ease !important;
+}
+
+.card:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Form Controls */
+.input-field input[type=text]:focus,
+.input-field input[type=password]:focus,
+.input-field input[type=email]:focus,
+.input-field input[type=number]:focus,
+.input-field textarea:focus {
+  border-bottom: 2px solid var(--primary) !important;
+  box-shadow: 0 1px 0 0 var(--primary) !important;
+}
+
+.input-field input[type=text]:focus + label,
+.input-field input[type=password]:focus + label,
+.input-field input[type=email]:focus + label,
+.input-field input[type=number]:focus + label,
+.input-field textarea:focus + label {
+  color: var(--primary) !important;
+}
+
+/* Badges / Chips de estado */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.PENDIENTE {
+  background-color: var(--badge-pending-bg);
+  color: var(--badge-pending-text);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+.status-badge.EN_PREPARACION {
+  background-color: var(--badge-prep-bg);
+  color: var(--badge-prep-text);
+  border: 1px solid rgba(29, 78, 216, 0.2);
+}
+
+.status-badge.ENVIADO {
+  background-color: var(--badge-sent-bg);
+  color: var(--badge-sent-text);
+  border: 1px solid rgba(67, 56, 202, 0.2);
+}
+
+.status-badge.ENTREGADO {
+  background-color: var(--badge-delivered-bg);
+  color: var(--badge-delivered-text);
+  border: 1px solid rgba(21, 128, 61, 0.2);
+}
+
+.status-badge.CANCELADO {
+  background-color: var(--badge-cancelled-bg);
+  color: var(--badge-cancelled-text);
+  border: 1px solid rgba(185, 28, 28, 0.2);
+}
+
+/* Stepper de cantidad tipo pastilla */
+.quantity-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  padding: 3px 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.quantity-stepper button {
+  background: #ffffff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.quantity-stepper button:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.quantity-stepper .qty-number {
+  padding: 0 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  min-width: 32px;
+  text-align: center;
+}
+
+/* Materialize Modals */
+.modal {
+  border-radius: 16px !important;
+  max-width: 600px !important;
+}
+
+.modal .modal-content {
+  padding: 28px !important;
+}
+
+/* Glassmorphism Header */
+.glass-nav {
+  background: var(--bg-glass) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  height: 72px !important;
+  line-height: 72px !important;
+}
+
+/* Price Highlight */
+.price-tag {
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.25rem;
+}
