@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -455,6 +455,7 @@ import { Pedido } from '../../models/pedido.model';
 export class OrderStatusComponent implements OnInit {
   private pedidoService = inject(PedidoService);
   private route = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
 
   public codigoBusqueda = '';
   public buscando = false;
@@ -477,15 +478,18 @@ export class OrderStatusComponent implements OnInit {
     this.buscando = true;
     this.errorMsg = '';
     this.pedido = null;
+    this.cdr.markForCheck();
 
     this.pedidoService.getPedidoPorCodigo(this.codigoBusqueda.trim()).subscribe({
       next: (data) => {
         this.pedido = data;
         this.buscando = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         this.buscando = false;
         this.errorMsg = err.error?.error || `No encontramos ningún pedido con el código '${this.codigoBusqueda}'.`;
+        this.cdr.markForCheck();
       }
     });
   }

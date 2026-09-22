@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdminSidebarComponent } from '../../../components/admin-sidebar/admin-sidebar.component';
@@ -283,6 +283,7 @@ import { AuthService, MetricasAdmin } from '../../../services/auth.service';
 })
 export class AdminDashboardComponent implements OnInit {
   private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
   public metricas: MetricasAdmin | null = null;
   public cargando = true;
@@ -293,14 +294,17 @@ export class AdminDashboardComponent implements OnInit {
 
   cargarMetricas(): void {
     this.cargando = true;
+    this.cdr.markForCheck();
     this.authService.getMetricas().subscribe({
       next: (data) => {
         this.metricas = data;
         this.cargando = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error cargando métricas:', err);
         this.cargando = false;
+        this.cdr.markForCheck();
       }
     });
   }

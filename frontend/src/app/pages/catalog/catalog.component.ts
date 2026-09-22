@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductoService } from '../../services/producto.service';
@@ -415,6 +415,7 @@ import { Producto } from '../../models/producto.model';
 export class CatalogComponent implements OnInit {
   private productoService = inject(ProductoService);
   public cartService = inject(CartService);
+  private cdr = inject(ChangeDetectorRef);
 
   public productos: Producto[] = [];
   public cargando = true;
@@ -428,14 +429,17 @@ export class CatalogComponent implements OnInit {
 
   cargarCatalogo(): void {
     this.cargando = true;
+    this.cdr.markForCheck();
     this.productoService.getProductos().subscribe({
       next: (data) => {
         this.productos = data;
         this.cargando = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error cargando catálogo:', err);
         this.cargando = false;
+        this.cdr.markForCheck();
       }
     });
   }

@@ -49,4 +49,8 @@ const PedidoSchema = new mongoose.Schema(
   }
 );
 
+// Índices para acelerar ordenamientos y filtros frecuentes
+PedidoSchema.index({ fechaPedido: -1 });
+PedidoSchema.index({ estado: 1 });
+
 module.exports = mongoose.model('Pedido', PedidoSchema);

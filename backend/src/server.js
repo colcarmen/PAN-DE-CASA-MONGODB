@@ -42,9 +42,9 @@ const startServer = async () => {
   await connectDB();
   await sembrarDatosSiEsNecesario();
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`\n======================================================`);
-    console.log(`🥐 Servidor Pan de Casa corriendo en: http://localhost:${PORT}`);
+    console.log(`🥐 Servidor Pan de Casa corriendo en: http://127.0.0.1:${PORT}`);
     console.log(`📦 MongoDB conectado: pandecasa_db`);
     console.log(`======================================================\n`);
   });

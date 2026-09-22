@@ -13,7 +13,7 @@ export interface MetricasAdmin {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/admin';
+  private apiUrl = 'http://127.0.0.1:5000/api/admin';
   private readonly ADMIN_KEY = 'panDeCasa_admin_auth';
 
   public isAdminLoggedIn = signal<boolean>(this.checkInitialAuth());

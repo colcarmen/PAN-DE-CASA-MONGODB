@@ -25,7 +25,7 @@ const resolverQueryPedido = (idParam) => {
 // GET /api/pedidos
 exports.listarTodos = async (req, res) => {
   try {
-    const pedidos = await Pedido.find().sort({ fechaPedido: -1 });
+    const pedidos = await Pedido.find().sort({ fechaPedido: -1 }).lean();
     res.json(pedidos);
   } catch (error) {
     res.status(500).json({ error: 'Error al listar pedidos', detalle: error.message });
@@ -40,7 +40,7 @@ exports.obtenerPorId = async (req, res) => {
       return res.status(404).json({ error: 'Identificador de pedido inválido' });
     }
 
-    const pedido = await Pedido.findOne(query);
+    const pedido = await Pedido.findOne(query).lean();
     if (!pedido) {
       return res.status(404).json({ error: `Pedido '${req.params.id}' no encontrado` });
     }

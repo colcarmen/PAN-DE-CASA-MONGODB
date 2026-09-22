@@ -23,4 +23,7 @@ const ProductoSchema = new mongoose.Schema(
   }
 );
 
+// Índice compuesto para acelerar filtrados de catálogo
+ProductoSchema.index({ categoria: 1, disponible: 1 });
+
 module.exports = mongoose.model('Producto', ProductoSchema);

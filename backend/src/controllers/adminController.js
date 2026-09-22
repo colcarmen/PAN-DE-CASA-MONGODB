@@ -38,7 +38,7 @@ exports.login = async (req, res) => {
 // GET /api/admin/metricas
 exports.obtenerMetricas = async (req, res) => {
   try {
-    const pedidos = await Pedido.find();
+    const pedidos = await Pedido.find().lean();
 
     let ventasTotales = 0;
     let pedidosTotales = pedidos.length;

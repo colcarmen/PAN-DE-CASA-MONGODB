@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -141,6 +141,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class AdminPasswordComponent {
   private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
   public passwordActual = '';
   public nuevaPassword = '';
@@ -153,18 +154,21 @@ export class AdminPasswordComponent {
     if (this.nuevaPassword !== this.confirmarPassword) {
       this.errorMsg = 'La nueva contraseña y su confirmación no coinciden.';
       this.exitoMsg = '';
+      this.cdr.markForCheck();
       return;
     }
 
     if (this.nuevaPassword.length < 4) {
       this.errorMsg = 'La nueva contraseña debe tener al menos 4 caracteres.';
       this.exitoMsg = '';
+      this.cdr.markForCheck();
       return;
     }
 
     this.guardando = true;
     this.errorMsg = '';
     this.exitoMsg = '';
+    this.cdr.markForCheck();
 
     this.authService.cambiarPassword(this.passwordActual, this.nuevaPassword).subscribe({
       next: (res) => {
@@ -173,10 +177,12 @@ export class AdminPasswordComponent {
         this.passwordActual = '';
         this.nuevaPassword = '';
         this.confirmarPassword = '';
+        this.cdr.markForCheck();
       },
       error: (err) => {
         this.guardando = false;
         this.errorMsg = err.error?.error || 'No se pudo actualizar la contraseña. Revisa la clave actual.';
+        this.cdr.markForCheck();
       }
     });
   }

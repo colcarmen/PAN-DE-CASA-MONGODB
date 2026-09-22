@@ -1,18 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { Producto } from '../models/producto.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
-  private apiUrl = 'http://localhost:5000/api/productos';
+  private apiUrl = 'http://127.0.0.1:5000/api/productos';
+  private cacheProductos: Producto[] | null = null;
 
   constructor(private http: HttpClient) {}
 
-  getProductos(): Observable<Producto[]> {
-    return this.http.get<Producto[]>(this.apiUrl);
+  getProductos(forzarRefresco = false): Observable<Producto[]> {
+    if (this.cacheProductos && !forzarRefresco) {
+      return of(this.cacheProductos);
+    }
+    return this.http.get<Producto[]>(this.apiUrl).pipe(
+      tap((data) => {
+        this.cacheProductos = data;
+      })
+    );
+  }
+
+  limpiarCache(): void {
+    this.cacheProductos = null;
   }
 
   getProducto(id: number | string): Observable<Producto> {
@@ -20,14 +32,20 @@ export class ProductoService {
   }
 
   createProducto(producto: Partial<Producto>): Observable<Producto> {
-    return this.http.post<Producto>(this.apiUrl, producto);
+    return this.http.post<Producto>(this.apiUrl, producto).pipe(
+      tap(() => this.limpiarCache())
+    );
   }
 
   updateProducto(id: number | string, producto: Partial<Producto>): Observable<Producto> {
-    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto);
+    return this.http.put<Producto>(`${this.apiUrl}/${id}`, producto).pipe(
+      tap(() => this.limpiarCache())
+    );
   }
 
   deleteProducto(id: number | string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(
+      tap(() => this.limpiarCache())
+    );
   }
 }

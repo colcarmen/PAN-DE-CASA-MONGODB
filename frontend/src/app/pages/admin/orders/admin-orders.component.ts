@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -349,6 +349,7 @@ import { Pedido, EstadoPedido } from '../../../models/pedido.model';
 })
 export class AdminOrdersComponent implements OnInit {
   private pedidoService = inject(PedidoService);
+  private cdr = inject(ChangeDetectorRef);
 
   public pedidos: Pedido[] = [];
   public cargando = true;
@@ -359,14 +360,17 @@ export class AdminOrdersComponent implements OnInit {
 
   cargarPedidos(): void {
     this.cargando = true;
+    this.cdr.markForCheck();
     this.pedidoService.getPedidos().subscribe({
       next: (data) => {
         this.pedidos = data;
         this.cargando = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error cargando pedidos:', err);
         this.cargando = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -378,6 +382,7 @@ export class AdminOrdersComponent implements OnInit {
     this.pedidoService.actualizarEstado(idOCodigo, nuevoEstado).subscribe({
       next: (actualizado) => {
         pedido.estado = actualizado.estado;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         alert('Error al actualizar estado: ' + (err.error?.error || err.message));

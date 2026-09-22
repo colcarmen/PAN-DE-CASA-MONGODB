@@ -7,7 +7,7 @@ import { Pedido, EstadoPedido } from '../models/pedido.model';
   providedIn: 'root'
 })
 export class PedidoService {
-  private apiUrl = 'http://localhost:5000/api/pedidos';
+  private apiUrl = 'http://127.0.0.1:5000/api/pedidos';
 
   constructor(private http: HttpClient) {}
 

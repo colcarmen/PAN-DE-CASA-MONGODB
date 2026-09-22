@@ -15,7 +15,7 @@ const construirQuery = (idParam) => {
 // GET /api/productos
 exports.listarTodos = async (req, res) => {
   try {
-    const productos = await Producto.find().sort({ id: 1 });
+    const productos = await Producto.find().sort({ id: 1 }).lean();
     res.json(productos);
   } catch (error) {
     res.status(500).json({ error: 'Error al listar productos', detalle: error.message });
@@ -30,7 +30,7 @@ exports.obtenerPorId = async (req, res) => {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    const producto = await Producto.findOne(query);
+    const producto = await Producto.findOne(query).lean();
     if (!producto) {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }

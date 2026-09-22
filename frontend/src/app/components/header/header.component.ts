@@ -69,37 +69,56 @@ import { CartService } from '../../services/cart.service';
     }
 
     .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px;
       color: #1e293b !important;
       font-weight: 800;
       font-size: 1.45rem;
       text-decoration: none;
       letter-spacing: -0.5px;
+      position: static !important;
+      height: 72px !important;
+      line-height: 72px !important;
     }
 
     .brand-badge {
       background: linear-gradient(135deg, #e76e55 0%, #d65a41 100%);
-      color: #ffffff;
-      width: 42px;
-      height: 42px;
+      color: #ffffff !important;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 10px rgba(231, 110, 85, 0.35);
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-shadow: 0 4px 12px rgba(231, 110, 85, 0.35);
+      flex-shrink: 0;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden;
     }
 
-    .brand-badge i {
-      font-size: 26px;
-      line-height: 1;
+    .brand-badge i,
+    .brand-badge i.material-icons {
+      font-size: 28px !important;
+      height: 28px !important;
+      line-height: 28px !important;
+      width: 28px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      float: none !important;
+      color: #ffffff !important;
     }
 
     .brand-text {
       background: linear-gradient(135deg, #1e293b 40%, #e76e55 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      line-height: 1;
     }
 
     .nav-items li a {

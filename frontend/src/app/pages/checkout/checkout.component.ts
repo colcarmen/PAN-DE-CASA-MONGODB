@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -29,7 +29,9 @@ import { PedidoService } from '../../services/pedido.service';
         </div>
 
         <div class="success-actions">
-          <a routerLink="/order-status" class="btn btn-large waves-effect waves-light">
+          <a routerLink="/order-status" 
+             [queryParams]="{ codigo: pedidoConfirmado.codigo || ('PED-' + pedidoConfirmado.id) }" 
+             class="btn btn-large waves-effect waves-light">
             <i class="material-icons left">local_shipping</i> Rastrear Pedido
           </a>
           <a routerLink="/" class="btn btn-large btn-secondary waves-effect">
@@ -418,6 +420,7 @@ export class CheckoutComponent implements OnInit {
   public cartService = inject(CartService);
   private pedidoService = inject(PedidoService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   public cliente = {
     nombre: '',
@@ -448,6 +451,7 @@ export class CheckoutComponent implements OnInit {
 
     this.procesando = true;
     this.errorMsg = '';
+    this.cdr.markForCheck();
 
     const payload = {
       cliente: {
@@ -470,10 +474,12 @@ export class CheckoutComponent implements OnInit {
         this.pedidoConfirmado = pedido;
         this.cartService.clearCart();
         this.procesando = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         this.procesando = false;
         this.errorMsg = err.error?.error || 'Ocurrió un problema procesando tu orden. Por favor intenta nuevamente.';
+        this.cdr.markForCheck();
       }
     });
   }

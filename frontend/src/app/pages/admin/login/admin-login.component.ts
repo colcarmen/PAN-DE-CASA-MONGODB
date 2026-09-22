@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -139,6 +139,7 @@ import { AuthService } from '../../../services/auth.service';
 export class AdminLoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   public password = '';
   public cargando = false;
@@ -149,10 +150,12 @@ export class AdminLoginComponent {
 
     this.cargando = true;
     this.errorMsg = '';
+    this.cdr.markForCheck();
 
     this.authService.login(this.password).subscribe({
       next: (res) => {
         this.cargando = false;
+        this.cdr.markForCheck();
         if (res.success) {
           this.router.navigate(['/admin/dashboard']);
         }
@@ -160,6 +163,7 @@ export class AdminLoginComponent {
       error: (err) => {
         this.cargando = false;
         this.errorMsg = err.error?.error || 'Contraseña de administración incorrecta.';
+        this.cdr.markForCheck();
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -387,6 +387,7 @@ import { Producto } from '../../../models/producto.model';
 })
 export class AdminProductsComponent implements OnInit {
   private productoService = inject(ProductoService);
+  private cdr = inject(ChangeDetectorRef);
 
   public productos: Producto[] = [];
   public cargando = true;
@@ -409,14 +410,17 @@ export class AdminProductsComponent implements OnInit {
 
   cargarProductos(): void {
     this.cargando = true;
-    this.productoService.getProductos().subscribe({
+    this.cdr.markForCheck();
+    this.productoService.getProductos(true).subscribe({
       next: (data) => {
         this.productos = data;
         this.cargando = false;
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al cargar productos:', err);
         this.cargando = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -459,6 +463,7 @@ export class AdminProductsComponent implements OnInit {
 
   guardarProducto(): void {
     this.guardando = true;
+    this.cdr.markForCheck();
 
     if (this.editandoId) {
       this.productoService.updateProducto(this.editandoId, this.productoForm).subscribe({
@@ -466,9 +471,11 @@ export class AdminProductsComponent implements OnInit {
           this.guardando = false;
           this.cerrarModal();
           this.cargarProductos();
+          this.cdr.markForCheck();
         },
         error: (err) => {
           this.guardando = false;
+          this.cdr.markForCheck();
           alert('Error al actualizar producto: ' + (err.error?.error || err.message));
         }
       });
@@ -478,9 +485,11 @@ export class AdminProductsComponent implements OnInit {
           this.guardando = false;
           this.cerrarModal();
           this.cargarProductos();
+          this.cdr.markForCheck();
         },
         error: (err) => {
           this.guardando = false;
+          this.cdr.markForCheck();
           alert('Error al crear producto: ' + (err.error?.error || err.message));
         }
       });
